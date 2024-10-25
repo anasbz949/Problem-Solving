@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        if(nums.size()==1){
+            return 0;
+        }
+        int right_sum=0;
+        int left_sum=0;
+        int pivote = 0;
+        for(int i=1; i<nums.size(); i++){
+            right_sum += nums[i];
+        }
+
+        while(pivote != nums.size()){
+            if(left_sum == right_sum){
+                return pivote;
+            }
+            else{
+                left_sum += nums[pivote];
+                pivote ++;
+                if(pivote != nums.size()){
+                    right_sum -= nums[pivote];
+                }
+            }
+        }
+        return -1;
+    }
+};
