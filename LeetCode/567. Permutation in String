@@ -1,0 +1,141 @@
+// Methode 1
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char, int> hashtable;
+        unordered_map<char, int> running_hashtable;
+
+        if(s1.length() > s2.length()){
+            return false;
+        }
+
+        for(int i=0; i<s1.length(); i++){
+            hashtable[s1[i]]++;
+
+            if(i < s1.length()-1){
+                running_hashtable[s2[i]]++;
+            }
+        }
+
+        int l = 0;
+        for(int j=s1.length()-1; j<s2.length(); ++j){
+            running_hashtable[s2[j]]++;
+              bool flag = true;
+
+            for (auto& kv : running_hashtable) {
+                char k = kv.first;
+                int v = kv.second;
+                if (v > 0) {
+                    if (hashtable[k] != v) {
+                        flag = false;
+                        break;
+                    }
+                } else {
+                    if (hashtable[k] > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+
+            if (flag) {
+                return true;
+            }
+
+            running_hashtable[s2[l]]--;
+            l++;
+        }
+
+        return false;
+    }
+};
+
+// Methode 2
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char, int> hashtable;
+        unordered_map<char, int> running_hashtable;
+
+        if(s1.length() > s2.length()){
+            return false;
+        }
+
+        for(int i=0; i<s1.length(); i++){
+            hashtable[s1[i]]++;
+
+            if(i < s1.length()-1){
+                running_hashtable[s2[i]]++;
+            }
+        }
+
+        int l = 0;
+        for(int j=s1.length()-1; j<s2.length(); ++j){
+            running_hashtable[s2[j]]++;
+              bool flag = true;
+
+            for (auto& kv : running_hashtable) {
+                char k = kv.first;
+                int v = kv.second;
+                if (v > 0) {
+                    if (hashtable[k] != v) {
+                        flag = false;
+                        break;
+                    }
+                } else {
+                    if (hashtable[k] > 0) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+
+            if (flag) {
+                return true;
+            }
+
+            running_hashtable[s2[l]]--;
+            l++;
+        }
+
+        return false;
+    }
+};
+
+//Methode 3
+class Solution {
+    bool areEqual(vector <int> a, vector <int> b){
+        for(int i=0; i<26; i++){
+            if(a[i] != b[i])
+            return false;
+        }
+        return true;
+    }
+public:
+    bool checkInclusion(string s1, string s2) {
+        if(s2.size() < s1.size())
+        return false;
+
+        vector <int> fres1(26,0);
+        for(char c:s1) fres1[c-'a']++;
+
+        vector <int> fres2(26,0);
+        int i=0, j=0;
+
+        while(j<s2.size()){
+            fres2[s2[j]-'a']++;
+            if(j-i+1 == s1.size()){
+                if(areEqual(fres1, fres2))
+                return true;
+            }
+            if(j-i+1<s1.size())
+            j++;
+            else{
+                fres2[s2[i]-'a']--;
+                i++;
+                j++;
+            }
+        }
+        return false;
+    }
+};
